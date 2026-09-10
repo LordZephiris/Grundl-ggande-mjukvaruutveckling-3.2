@@ -1,0 +1,122 @@
+# -*- restclient -*-
+
+# Up and running?
+GET http://localhost:5000/
+
+# Overviews
+GET http://localhost:5000/api/Overview
+
+# List
+GET http://localhost:5000/api/List
+
+# Info
+GET http://localhost:5000/api/Info?name=collection%201
+# (Spaces are encoded as "%20" in URLS)
+
+# Search
+GET http://localhost:5000/api/Search?name=collection
+
+# Add a Collection
+POST http://localhost:5000/api/Collection
+content-type: application/json
+
+{
+  "name": "web collection",
+  "description": "created over the interwebz",
+  "creation_date": "just now",
+  "modification_date": "only recently",
+  "still_updated": true
+}
+
+# Test that the collection got there
+GET http://localhost:5000/api/Search?name=web
+
+# Add a Backup
+POST http://localhost:5000/api/Backup
+content-type: application/json
+
+{
+  "name": "collection 1",
+  "backupname": "DVD Burn",
+  "date": "May 2025",
+  "location": "Top drawer"
+}
+
+# Is it there?
+GET http://localhost:5000/api/Info?name=collection%201
+
+# Add a backup to someplace that does not exist
+POST http://localhost:5000/api/Backup
+content-type: application/json
+
+{
+  "name": "Not_an_existing_collection",
+  "backupname": "DVD Burn",
+  "date": "May 2025",
+  "location": "Top drawer"
+}
+
+# Create a new test object
+
+POST http://localhost:5000/api/Collection
+content-type: application/json
+
+{
+  "name": "dummy",
+  "description": "created over the interwebz",
+  "creation_date": "just now",
+  "modification_date": "only recently",
+  "still_updated": false
+}
+
+
+# Add a backup to it
+POST http://localhost:5000/api/Backup
+content-type: application/json
+
+{
+  "name": "dummy",
+  "backupname": "DVD Burn",
+  "date": "April 2025",
+  "location": "Top drawer"
+}
+
+# Add one more backup to it
+POST http://localhost:5000/api/Backup
+content-type: application/json
+
+{
+  "name": "dummy",
+  "backupname": "DVD Burn",
+  "date": "May 2025",
+  "location": "Top drawer"
+}
+
+# Edit
+POST http://localhost:5000/api/Edit
+content-type: application/json
+
+{
+  "name": "dummy",
+  "modification_date": "yesterday",
+  "still_updated": true
+}
+
+# Check
+GET http://localhost:5000/api/Info?name=dummy
+
+# Unbackup
+POST http://localhost:5000/api/Unbackup
+content-type: application/json
+
+{
+  "name": "dummy",
+  "backupname": "DVD Burn",
+  "date": "May 2025"
+}
+
+# Delete
+DELETE http://localhost:5000/api/Delete?name=dummy
+
+# Check 
+GET http://localhost:5000/api/Info?name=dummy
